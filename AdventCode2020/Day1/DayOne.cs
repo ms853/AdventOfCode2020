@@ -18,24 +18,29 @@ namespace AdventOfCode2020
         {
             List<string> inputList = new List<string>();
             string[] dataArray = null;
+            TextReader tr = new StreamReader(fileName);
 
             if (!File.Exists(fileName)) 
             {
                 Console.WriteLine("Couldn't find file!!");
                 return new List<string>();
             }
+
             try 
             {
-                TextReader tr = new StreamReader(fileName);
+               
                 string data = tr.ReadToEnd();
+                tr.Close();
+                data = data[0..^1];
                 dataArray = data.Split("\n");
             } 
             catch (IOException io) 
             {
                 Console.WriteLine("Something went wrong: ", io.Message);
+                tr.Close();
             }
            
-            for (int i = 0; i < dataArray.Length - 1; i++)
+            for (int i = 0; i < dataArray.Length; i++)
             {
 
                 inputList.Add(dataArray[i]);
@@ -51,28 +56,31 @@ namespace AdventOfCode2020
         /// <returns></returns>
         public static int SolutionToPart1()
         {
-            string pathToFile = @"D:\Private Study\AdventOfCode2020\InputData\input.txt";
+            string pathToFile = @"D:\Private Study\AdventOfCode2020\AdventCode2020\InputData\input.txt";
             List<string> DataList = ReadInput(pathToFile);
             string[] inputArray = DataList.ToArray();
-
+            int answer = 0;
             //Nested loop for iterating over the numbers in the array.
             //This ensures that the number is not read more than once.
             for (int i = 0; i < inputArray.Length; i++)
             {
                 for (int j = i; j < inputArray.Length; j++)
                 {
+                   
+
                     int num1 = int.Parse(inputArray[i]);
                     int num2 = int.Parse(inputArray[j]);
+                    if (num1 == num2) { continue; }
 
                     if (num1 + num2 == 2020)
                     {
-                        int answer = num1 * num2;
+                        answer = num1 * num2;
                         return answer;
                     }
                 }
             }
 
-            return 0;
+            return answer;
         }
 
         /// <summary>
@@ -81,7 +89,7 @@ namespace AdventOfCode2020
         /// <returns></returns>
         public static int SolutionToPart2() 
         {
-            string pathToFile = @"D:\Private Study\AdventOfCode2020\InputData\input.txt";
+            string pathToFile = @"D:\Private Study\AdventOfCode2020\AdventCode2020\InputData\input.txt";
 
             List<string> DataList = ReadInput(pathToFile);
             string[] inputArray = DataList.ToArray();
@@ -95,6 +103,7 @@ namespace AdventOfCode2020
                         int num1 = int.Parse(inputArray[i]);
                         int num2 = int.Parse(inputArray[j]);
                         int num3 = int.Parse(inputArray[k]);
+                        if (num1 == num2 && num2 == num3) { continue; }
 
                         if (num1 + num2 + num3 == 2020)
                         {
