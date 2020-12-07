@@ -64,14 +64,12 @@ namespace AdventOfCode2020
             //This ensures that the number is not read more than once.
             for (int i = 0; i < inputArray.Length; i++)
             {
-                for (int j = i; j < inputArray.Length; j++)
+                for (int j = i + 1; j < inputArray.Length; j++)
                 {
-                   
 
                     int num1 = int.Parse(inputArray[i]);
                     int num2 = int.Parse(inputArray[j]);
-                    if (num1 == num2) { continue; }
-
+                   
                     if (num1 + num2 == 2020)
                     {
                         answer = num1 * num2;
@@ -96,14 +94,13 @@ namespace AdventOfCode2020
 
             for (int i = 0; i < inputArray.Length; i++)
             {
-                for (int j = i; j < inputArray.Length; j++)
+                for (int j = i + 1; j < inputArray.Length; j++)
                 {
-                    for (int k = j; k < inputArray.Length; k++) 
+                    for (int k = j + 1; k < inputArray.Length; k++) 
                     {
                         int num1 = int.Parse(inputArray[i]);
                         int num2 = int.Parse(inputArray[j]);
                         int num3 = int.Parse(inputArray[k]);
-                        if (num1 == num2 && num2 == num3) { continue; }
 
                         if (num1 + num2 + num3 == 2020)
                         {
