@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace AdventOfCode2020
+namespace AdventOfCode2020.Day1
 {
     public class DayOne
     {
@@ -56,7 +56,7 @@ namespace AdventOfCode2020
         /// <returns></returns>
         public static int SolutionToPart1()
         {
-            string pathToFile = @"D:\Private Study\AdventOfCode2020\AdventCode2020\InputData\input.txt";
+            string pathToFile = @"InputData\input.txt";
             List<string> DataList = ReadInput(pathToFile);
             string[] inputArray = DataList.ToArray();
             int answer = 0;
@@ -87,7 +87,7 @@ namespace AdventOfCode2020
         /// <returns></returns>
         public static int SolutionToPart2() 
         {
-            string pathToFile = @"D:\Private Study\AdventOfCode2020\AdventCode2020\InputData\input.txt";
+            string pathToFile = @"InputData\input.txt";
 
             List<string> DataList = ReadInput(pathToFile);
             string[] inputArray = DataList.ToArray();

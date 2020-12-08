@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
-namespace AdventOfCode2020.Day1
+namespace AdventOfCode2020.Day2
 {
     /// <summary>
     /// Password Philosophy
@@ -22,23 +24,63 @@ namespace AdventOfCode2020.Day1
             return lines;
         }
 
-        private Dictionary<string,string> GroupData() 
+        private static Dictionary<string, bool> GroupData() 
         {
             string filePath = @"InputData\password_policies.txt";
             List<string> DataList = ReadData(filePath);
-            Dictionary<string, string> PasswordRulePairs = new Dictionary<string, string>(); 
+            Dictionary<string, bool> PasswordRulePairs = new Dictionary<string, bool>();
+            bool isPasswordValid;
             foreach (string line in DataList) 
             {
                 string[] tempArray = line.Split(":");
-                PasswordRulePairs.Add(tempArray[0],tempArray[1]);
+                isPasswordValid = ValidatePasswords(tempArray[0],tempArray[1]);
+                PasswordRulePairs.Add(line, isPasswordValid);
             }
+
             return PasswordRulePairs;
         }
 
-        public void Solution() 
+        private static bool ValidatePasswords(string pwdPolicy, string password) 
         {
-            Dictionary<string, string> PwdAndRules = GroupData();
-            
+            int maxOccur, minimumOccur, occurs = 0;
+            char[] policy = pwdPolicy.ToCharArray();
+            char[] passwordArray = password.ToCharArray();
+            char charToMatch = policy[policy.Length-1];
+            string max = pwdPolicy.Substring(2).Trim(charToMatch);
+            string min = pwdPolicy.Substring(0, 1);
+            minimumOccur = int.Parse(min);
+            maxOccur = int.Parse(max);
+
+            for (int i = 0; i < passwordArray.Length; i++) 
+            {
+                if (passwordArray[i] == charToMatch) 
+                {
+                    occurs++;
+                }
+            }
+
+            if(occurs == minimumOccur || occurs <= maxOccur) 
+            {
+                return true;
+            }
+          
+            return false;
+        }
+
+        public static int Solution() 
+        {
+            int sumOfValidPasswords = 0;
+            Dictionary<string, bool> GroupedData = GroupData();
+
+            foreach(bool isValidFlag in GroupedData.Values) 
+            {
+                if (isValidFlag == true) 
+                {
+                    sumOfValidPasswords++;
+                }
+            }
+           
+            return sumOfValidPasswords;
         }
 
     }
