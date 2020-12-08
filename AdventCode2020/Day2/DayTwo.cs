@@ -53,15 +53,25 @@ namespace AdventOfCode2020.Day2
 
             for (int i = 0; i < passwordArray.Length; i++) 
             {
-                if (passwordArray[i] == charToMatch) 
+                if (passwordArray[i] == charToMatch)
                 {
                     occurs++;
                 }
+                else if (!passwordArray.Contains(charToMatch)) 
+                {
+                    return false;
+                }
             }
 
-            if(occurs == minimumOccur || occurs <= maxOccur) 
+            if (occurs >= minimumOccur && occurs <= maxOccur)
             {
                 return true;
+
+            }
+           
+            else if (occurs < minimumOccur || occurs > maxOccur)
+            {
+                return false;
             }
           
             return false;
