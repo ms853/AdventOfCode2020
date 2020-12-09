@@ -32,12 +32,14 @@ namespace AdventOfCode2020.Day2
             charToMatch = charToMatch.Substring(0, 1);
             var targetChar = char.Parse(charToMatch);
 
-            if (position1 == password.IndexOf(targetChar) || position2 == password.IndexOf(targetChar)) 
+
+          /*  if (position1 == password.IndexOf(targetChar) && position2 == password.IndexOf(targetChar))
+                return false;*/
+
+            if (password[position1] == targetChar ^ password[position2] == targetChar) 
             {
                 return true;
             }
-
-
 
             return false;
         }
@@ -104,6 +106,7 @@ namespace AdventOfCode2020.Day2
         public static int SolutionToPart2()
         {
             int totalValidPwds = 0;
+            //string filePath = @"InputData\test.txt";
             List<string> DataList = ReadData(filePath);
 
             foreach (string line in DataList) 
