@@ -32,48 +32,14 @@ namespace AdventOfCode2020.Day2
             return PasswordRulePairs;
         }*/
 
-        /*private static bool ValidatePasswords(string pwdPolicy, string password) 
-        {
-            int maxOccur, minimumOccur, occurs = 0;
-            char[] policy = pwdPolicy.ToCharArray();
-            char[] passwordArray = password.ToCharArray();
-            char charToMatch = policy[policy.Length-1];
-            string max = pwdPolicy.Substring(2).Trim(charToMatch);
-            string min = pwdPolicy.Substring(0, 1);
-            minimumOccur = int.Parse(min);
-            maxOccur = int.Parse(max);
-
-            if (!passwordArray.Contains(charToMatch))
-                return false;
-
-            for (int i = 0; i < passwordArray.Length; i++) 
-            {
-                if (passwordArray[i] == charToMatch)
-                {
-                    occurs++;
-                }
-            }
-
-            if (occurs >= minimumOccur && occurs <= maxOccur)
-            {
-                return true;
-
-            }
-            else 
-            {
-                return false;
-            }
-           
-        }*/
-
         private static bool CheckPasswords(string pwdPolicy, string charToMatch, string password)
         {
             int maxOccur, minimumOccur, occurs = 0;
-          
+            string[] minimumMax = pwdPolicy.Split("-");
+            string min = minimumMax[0]; 
+            string max = minimumMax[1];
             charToMatch = charToMatch.Substring(0,1);
             var targetChar = char.Parse(charToMatch);
-            string max = pwdPolicy.Substring(2);
-            string min = pwdPolicy.Substring(0, 1);
             minimumOccur = int.Parse(min);
             maxOccur = int.Parse(max);
 
@@ -102,7 +68,7 @@ namespace AdventOfCode2020.Day2
 
         }
 
-        public static int Solution() 
+        public static int SolutionToPart1() 
         {
             int sumOfValidPasswords = 0;
             
