@@ -13,6 +13,7 @@ namespace AdventOfCode2020.Day2
     /// </summary>
     class DayTwo
     {
+        const string filePath = @"InputData\password_policies.txt";
 
         private static List<string> ReadData(string filePath) 
         {
@@ -20,17 +21,26 @@ namespace AdventOfCode2020.Day2
             return lines;
         }
 
-       /* private static Dictionary<string, bool> ProcessData(List<string> linesRead)
+
+        private static bool ValidatePasswordPolicy(string policy, string charToMatch, string password)
         {
-           
-            List<string> DataList = ReadData(filePath);
-            Dictionary<string, bool> PasswordRulePairs = new Dictionary<string, bool>();
-            bool isPasswordValid;
 
-            
+            int position1, position2;
+            string[] positions = policy.Split('-');
+            position1 = int.Parse(positions[0]) -1; //Position is counted from 1 not zero.
+            position2 = int.Parse(positions[1]) -1;
+            charToMatch = charToMatch.Substring(0, 1);
+            var targetChar = char.Parse(charToMatch);
 
-            return PasswordRulePairs;
-        }*/
+            if (position1 == password.IndexOf(targetChar) || position2 == password.IndexOf(targetChar)) 
+            {
+                return true;
+            }
+
+
+
+            return false;
+        }
 
         private static bool CheckPasswords(string pwdPolicy, string charToMatch, string password)
         {
@@ -68,12 +78,12 @@ namespace AdventOfCode2020.Day2
 
         }
 
+
+
         public static int SolutionToPart1() 
         {
             int sumOfValidPasswords = 0;
             
-            string filePath = @"InputData\password_policies.txt";
-
             List<string> DataList = ReadData(filePath);
 
             foreach (string line in DataList)
@@ -88,6 +98,24 @@ namespace AdventOfCode2020.Day2
             }
 
             return sumOfValidPasswords;
+        }
+
+
+        public static int SolutionToPart2()
+        {
+            int totalValidPwds = 0;
+            List<string> DataList = ReadData(filePath);
+
+            foreach (string line in DataList) 
+            {
+                string[] tempArray = line.Split(' ');
+                
+                if (ValidatePasswordPolicy(tempArray[0], tempArray[1], tempArray[2])) 
+                {
+                    totalValidPwds++;
+                }
+            }
+            return totalValidPwds;
         }
 
     }
