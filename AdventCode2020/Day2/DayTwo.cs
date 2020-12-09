@@ -14,33 +14,25 @@ namespace AdventOfCode2020.Day2
     class DayTwo
     {
 
-        //For solution
-        //Read the data, and store it in a dictionary. 
-        //Then come up with an algorithm to compare each one key and value simultaneously
-        //Check the rule and the password that follows after the colon. 
         private static List<string> ReadData(string filePath) 
         {
             List<string> lines = File.ReadAllLines(filePath).ToList(); 
             return lines;
         }
 
-        private static Dictionary<string, bool> GroupData() 
+       /* private static Dictionary<string, bool> ProcessData(List<string> linesRead)
         {
-            string filePath = @"InputData\password_policies.txt";
+           
             List<string> DataList = ReadData(filePath);
             Dictionary<string, bool> PasswordRulePairs = new Dictionary<string, bool>();
             bool isPasswordValid;
-            foreach (string line in DataList) 
-            {
-                string[] tempArray = line.Split(":");
-                isPasswordValid = ValidatePasswords(tempArray[0],tempArray[1]);
-                PasswordRulePairs.Add(line, isPasswordValid);
-            }
+
+            
 
             return PasswordRulePairs;
-        }
+        }*/
 
-        private static bool ValidatePasswords(string pwdPolicy, string password) 
+        /*private static bool ValidatePasswords(string pwdPolicy, string password) 
         {
             int maxOccur, minimumOccur, occurs = 0;
             char[] policy = pwdPolicy.ToCharArray();
@@ -51,15 +43,14 @@ namespace AdventOfCode2020.Day2
             minimumOccur = int.Parse(min);
             maxOccur = int.Parse(max);
 
+            if (!passwordArray.Contains(charToMatch))
+                return false;
+
             for (int i = 0; i < passwordArray.Length; i++) 
             {
                 if (passwordArray[i] == charToMatch)
                 {
                     occurs++;
-                }
-                else if (!passwordArray.Contains(charToMatch)) 
-                {
-                    return false;
                 }
             }
 
@@ -68,28 +59,68 @@ namespace AdventOfCode2020.Day2
                 return true;
 
             }
-           
-            else if (occurs < minimumOccur || occurs > maxOccur)
+            else 
             {
                 return false;
             }
+           
+        }*/
+
+        private static bool CheckPasswords(string pwdPolicy, string charToMatch, string password)
+        {
+            int maxOccur, minimumOccur, occurs = 0;
           
-            return false;
+            charToMatch = charToMatch.Substring(0,1);
+            var targetChar = char.Parse(charToMatch);
+            string max = pwdPolicy.Substring(2);
+            string min = pwdPolicy.Substring(0, 1);
+            minimumOccur = int.Parse(min);
+            maxOccur = int.Parse(max);
+
+            if (!password.Contains(targetChar))
+                return false;
+
+            var passwordArray = password.ToCharArray();
+
+            for (int i = 0; i < passwordArray.Length; i++)
+            {
+                if (passwordArray[i] == targetChar)
+                {
+                    occurs++;
+                }
+            }
+
+            if (occurs >= minimumOccur && occurs <= maxOccur)
+            {
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         public static int Solution() 
         {
             int sumOfValidPasswords = 0;
-            Dictionary<string, bool> GroupedData = GroupData();
+            
+            string filePath = @"InputData\password_policies.txt";
 
-            foreach(bool isValidFlag in GroupedData.Values) 
+            List<string> DataList = ReadData(filePath);
+
+            foreach (string line in DataList)
             {
-                if (isValidFlag == true) 
+                string[] tempArray = line.Split(' ');
+
+                if (CheckPasswords(tempArray[0], tempArray[1], tempArray[2])) 
                 {
                     sumOfValidPasswords++;
                 }
+               
             }
-           
+
             return sumOfValidPasswords;
         }
 
