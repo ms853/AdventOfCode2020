@@ -9,8 +9,8 @@ using System.Text;
 namespace AdventOfCode2020.Day3
 {
     ///--- Day 3: Toboggan Trajectory ---
-    
-    class Day3 
+
+    public class Day3
     {
         const string filePath = @"InputData\map_input";
 
@@ -20,9 +20,36 @@ namespace AdventOfCode2020.Day3
             return lines;
         }
 
-        public static void SolutionToPart1() 
+     
+
+        public static int SolutionToPart1() 
         {
-            List<string> MapData = ReadData(filePath);
+            string testFile = @"InputData\test.txt";
+            List<string> MapData = ReadData(testFile);
+            int numberOfTrees = TraverseMap(MapData);
+
+            return numberOfTrees;
+        }
+
+        private static int TraverseMap(List<string> mapData)
+        {
+            
+            int treesTotal = 0;
+            foreach (string line in mapData) 
+            {
+                if (line.Contains("#"))
+                {
+                    treesTotal++;
+                }
+                else 
+                {
+                    continue;
+                }
+            }
+
+            return treesTotal;
+            //Iterate through the two dimensional array.
+
         }
 
         public static void SolutionToPart2() { }
