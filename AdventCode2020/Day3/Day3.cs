@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Xml.Xsl;
 
 namespace AdventOfCode2020.Day3
 {
@@ -12,8 +14,8 @@ namespace AdventOfCode2020.Day3
 
     public class Day3
     {
-        const string filePath = @"InputData\map_input";
-
+        const string filePath = @"InputData\map_input.txt";
+   
         private static List<string> ReadData(string filePath)
         {
             List<string> lines = File.ReadAllLines(filePath).ToList();
@@ -24,8 +26,8 @@ namespace AdventOfCode2020.Day3
 
         public static int SolutionToPart1() 
         { 
-            string testFile = @"InputData\test.txt";
-            List<string> MapData = ReadData(testFile);
+            //string testFile = @"InputData\test.txt";
+            List<string> MapData = ReadData(filePath);
             int numberOfTrees = TraverseMap(MapData);
 
             return numberOfTrees;
@@ -35,24 +37,26 @@ namespace AdventOfCode2020.Day3
         {
             
             int treesTotal = 0;
-            int rightCount = 3;
+            int xSlope = 3;
+            int x = 0;
+
 
             foreach(string line in mapData) 
             {
-                //split to a character array
-                for (int i = 0; i < line.Length; i++)
+                if (x >= line.Length)
                 {
-                    if (i == rightCount) break;
-
-                    if (line[i] == '#')
-                    {
-                        treesTotal++;
-                    }
-
+                    x -= line.Length;
                 }
-      
+
+                if (line[x] == '#') 
+                {
+                    treesTotal++;
+                }
+
+                x += xSlope;
+
             }
-       
+
             return treesTotal;
         }
 
