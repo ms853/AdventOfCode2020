@@ -23,7 +23,7 @@ namespace AdventOfCode2020.Day3
      
 
         public static int SolutionToPart1() 
-        {
+        { 
             string testFile = @"InputData\test.txt";
             List<string> MapData = ReadData(testFile);
             int numberOfTrees = TraverseMap(MapData);
@@ -35,21 +35,25 @@ namespace AdventOfCode2020.Day3
         {
             
             int treesTotal = 0;
-            foreach (string line in mapData) 
+            int rightCount = 3;
+
+            foreach(string line in mapData) 
             {
-                if (line.Contains("#"))
+                //split to a character array
+                for (int i = 0; i < line.Length; i++)
                 {
-                    treesTotal++;
+                    if (i == rightCount) break;
+
+                    if (line[i] == '#')
+                    {
+                        treesTotal++;
+                    }
+
                 }
-                else 
-                {
-                    continue;
-                }
+      
             }
-
+       
             return treesTotal;
-            //Iterate through the two dimensional array.
-
         }
 
         public static void SolutionToPart2() { }
