@@ -10,6 +10,14 @@ namespace AdventOfCode2020.Day4
 {
 
     //Passport Processing
+    //CHANGE TUPLE DATA TYPE OR WRITE A CUSTOM CLASS.
+
+    class MyMap 
+    {
+        public string Key { get; set; }
+        public string Value { get; set; }
+    }
+
     public class Day4
     {
         const string filePath = @"InputData\passport_input.txt";
@@ -45,7 +53,7 @@ namespace AdventOfCode2020.Day4
 
         static List<string> ParsePassportData() 
         {
-            string testFile = @"InputData\passport_input.txt";
+            string testFile = @"InputData\testFile4.txt";
             List<string> parsedData = new List<string>();
             string UnsortedPassports = ReadData(filePath);
             //Move character to the beginning of the line.
@@ -71,25 +79,25 @@ namespace AdventOfCode2020.Day4
             int optionalFieldCount = 0;
             int requiredPassportCount = 0; //Number of required fields found in the data. 
             int expectedPassportCount = PassportTitles.Select(x => x.Value).Count(); //Count the number of expected fields 
-            var PassportToCheck = new List<Tuple<string, string>>();
+            var PassportToCheck = new List<MyMap>();
             var PassportDataList = ParsePassportData();
 
             foreach (string pInfo in PassportDataList) 
             {
                 string[] prepareData = pInfo.Split(':');
-                PassportToCheck.Add(Tuple.Create(prepareData[0], prepareData[1])); 
+                PassportToCheck.Add( new MyMap { Key = prepareData[0], Value = prepareData[1] }); 
             }
 
-            foreach (Tuple<string, string> field in PassportToCheck) 
+            foreach (MyMap field in PassportToCheck) 
             {
-                if (PassportTitles.TryGetValue(field.Item1, out bool required))
+                if (PassportTitles.TryGetValue(field.Key, out bool required))
                 {
                     if (required) requiredPassportCount++;
                     else optionalFieldCount++;
                 }
                 else 
                 {
-                    Console.WriteLine($"Unrecogrnised field {field.Item1}!");
+                    Console.WriteLine($"Unrecogrnised field {field.Key}!");
                 }
 
                 if (requiredPassportCount == expectedPassportCount) validPassports++;
