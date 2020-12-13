@@ -9,15 +9,6 @@ using System.Text;
 namespace AdventOfCode2020.Day4
 {
 
-    //Passport Processing
-    //CHANGE TUPLE DATA TYPE OR WRITE A CUSTOM CLASS.
-
-    class MyMap 
-    {
-        public string Key { get; set; }
-        public string Value { get; set; }
-    }
-
     public class Day4
     {
         const string filePath = @"InputData\passport_input.txt";
@@ -51,73 +42,44 @@ namespace AdventOfCode2020.Day4
             }
         }*/
 
-        static List<string> ParsePassportData() 
+        private static bool ValidatePassport(string passportUnsorted) 
         {
+            var passport = passportUnsorted.Replace('\n', ' ');
+
+            if (!passport.Contains("byr")) return false;
+            if (!passport.Contains("hgt")) return false;
+
+            if (!passport.Contains("cid") && passport.Length == 7) return true;
+                
+            return true;
+        }
+
+        public static void Part1() 
+        {
+            int validPassport = 0;
+
             string testFile = @"InputData\testFile4.txt";
             List<string> parsedData = new List<string>();
             string UnsortedPassports = ReadData(filePath);
             //Move character to the beginning of the line.
-            string[] tempArr = UnsortedPassports.Replace("\r","").Replace("\n\n", "@").Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in tempArr) 
+            string tempData = UnsortedPassports.Replace("\r", "");
+            //.Replace("\n\n", "@").Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
+            var noNewLinesInData = tempData.Replace("\n\n", "@");
+            var PassportInfo = noNewLinesInData.Split(new char[] { '@'});
+
+            foreach (string p in PassportInfo) 
             {
-                string[] passportParts = s.Split(new char[] { '\n', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < passportParts.Length; i++) 
+                if (ValidatePassport(p)) 
                 {
-                    parsedData.Add(passportParts[i]);
+                    validPassport++;
                 }
-
             }
-            return parsedData;
-        }
-
-        public static int SolutionToPart1() 
-        {
-            //check for the following fields
-            //byr
-            //hgt 
-            int validPassports = 0;
-            int optionalFieldCount = 0;
-            int requiredPassportCount = 0; //Number of required fields found in the data. 
-            int expectedPassportCount = PassportTitles.Select(x => x.Value).Count(); //Count the number of expected fields 
-            var PassportToCheck = new List<MyMap>();
-            var PassportDataList = ParsePassportData();
-
-            foreach (string pInfo in PassportDataList) 
-            {
-                string[] prepareData = pInfo.Split(':');
-                PassportToCheck.Add( new MyMap { Key = prepareData[0], Value = prepareData[1] }); 
-            }
-
-            foreach (MyMap field in PassportToCheck) 
-            {
-                if (PassportTitles.TryGetValue(field.Key, out bool required))
-                {
-                    if (required) requiredPassportCount++;
-                    else optionalFieldCount++;
-                }
-                else 
-                {
-                    Console.WriteLine($"Unrecogrnised field {field.Key}!");
-                }
-
-                if (requiredPassportCount == expectedPassportCount) validPassports++;
-            }
-            //Dictionary<string, string> PassportsToCheck = ParsePassportData();
           
+            Console.WriteLine($"The number of valid passports are: {validPassport}");
             
-            //List<string> PassportList
-           /* foreach (KeyValuePair<string,string> dic in PassportsToCheck)
-            {
-                if (dic.Key == "byr" || dic.Key == "hgt") 
-                {
-                    validPassports++;
-                }
-            }*/
-
-
-            Console.WriteLine("Number of Valid passports: {0}", validPassports);
-            return validPassports;
         }
+
+       
 
     }
 }
