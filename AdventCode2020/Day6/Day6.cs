@@ -34,7 +34,7 @@ namespace AdventOfCode2020.Day6
         private static List<string> ParseData() 
         {
             string testFile = @"InputData\testFile6.txt";
-            string rawData = ReadData(testFile);
+            string rawData = ReadData(fileName);
             string noNewLines = rawData.Replace("\r","").Replace("\n\n", "@").Trim();
             var questionsList = noNewLines.Split('@', StringSplitOptions.RemoveEmptyEntries).ToList();
 
@@ -43,35 +43,30 @@ namespace AdventOfCode2020.Day6
 
         public static void Day6SolutionPart1() 
         {
-            int answerPerGroupCount = 0;
-            int answeredQuestionsCount = 0, answerCount = 0;
-            int totalNumberOfQuestions = 6; //Will be used to check against the length of the string of answers per group.
+            int answeredQuestionsCount = 0;
+          
             List<string> questions = ParseData();
-            Dictionary<string, int> groupAnswers = new Dictionary<string,int>();
-            
+            //This datastructure will hold the the list of all the group answers and the number of occurances. 
+            List<Dictionary<char, int>> groupAnswerWithTotal = new List<Dictionary<char, int>>();
+
             foreach (string q in questions) 
             {
-                var checkQuestion = q.Split(new char[] { '\n', ','});
-                for (int i = 0; i < checkQuestion.Length; i++) 
+                Dictionary<char, int> AnswerWithCount = new Dictionary<char, int>();
+                string checkQuestion = q.Replace(" ", "").Replace("\n", "");
+                foreach (char answerChar in checkQuestion) 
                 {
-                    if (checkQuestion[i].Length != totalNumberOfQuestions) 
-                    {
-                        answerCount = 0;
-                        for (int j = 0; j < checkQuestion[i].Length; j++) 
-                        {
-                            answerCount++;
-                            //groupAnswers.Add(checkQuestion[j],answerCount);
-                        }
-                        answerPerGroupCount += answerCount;
-                        
-                    }
+                    if (AnswerWithCount.TryGetValue(answerChar, out int occuranceCount))
+                        occuranceCount++;
+                    else
+                        AnswerWithCount[answerChar] = 1;
                    
                 }
-                
-            }
-            answeredQuestionsCount = answerPerGroupCount;
+                groupAnswerWithTotal.Add(AnswerWithCount); //Once all the occurences of the letter have been added, then I add to the list of dictionaries. 
+                answeredQuestionsCount += AnswerWithCount.Count();
+                Console.WriteLine($"Number of people who answered questions in the Group: {groupAnswerWithTotal.Count}, {AnswerWithCount.Count} -- Total Questions Answered: {answeredQuestionsCount} ");
 
-            Console.WriteLine($"Total Number of questions answered yes to is: {answeredQuestionsCount}");
+            }
+
         }
     }
 }
