@@ -33,7 +33,7 @@ namespace AdventOfCode2020.Day6
 
         private static List<string> ParseData() 
         {
-            string testFile = @"InputData\testFile6.txt";
+            //string testFile = @"InputData\testFile6.txt";
             string rawData = ReadData(fileName);
             string noNewLines = rawData.Replace("\r","").Replace("\n\n", "@").Trim();
             var questionsList = noNewLines.Split('@', StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -67,6 +67,31 @@ namespace AdventOfCode2020.Day6
 
             }
 
+        }
+        
+        //https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.hashset-1?view=net-5.0 (For personal reference). 
+
+        public static void Day6SolutionPart2() 
+        {
+            List<string> questions = ParseData();
+            int totalCount = 0;
+            List<HashSet<char>> AnsweredQuestSet = new List<HashSet<char>>(); 
+            foreach(string q in questions) 
+            {
+                
+                var questionToCheck = q.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+                HashSet<char> everyonesAnswer = new HashSet<char>(questionToCheck[0]);
+                for (int i = 0; i < questionToCheck.Length; i++)
+                {
+                    everyonesAnswer.IntersectWith(new HashSet<char>(questionToCheck[i]));
+
+                    if (everyonesAnswer.Count == 0) break;
+                      
+                }
+                AnsweredQuestSet.Add(everyonesAnswer);
+                totalCount += everyonesAnswer.Count();
+                Console.WriteLine($"Group Number: {AnsweredQuestSet.Count()}, Answer Total: {everyonesAnswer.Count} Total Questions Answered: {totalCount}");
+            }
         }
     }
 }
