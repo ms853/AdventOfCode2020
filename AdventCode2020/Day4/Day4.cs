@@ -11,71 +11,68 @@ namespace AdventOfCode2020.Day4
 
     public class Day4
     {
-        const string filePath = @"InputData\passport_input.txt";
+        const string filePath = @"InputData\passport.txt";
         
         //Valid Passport headers
         //All titles are essential apart from Country ID (cid).
-        static Dictionary<string, bool> PassportTitles = new Dictionary<string, bool> 
+       
+        private static List<string> ReadData(string filePath)
         {
-            {"byr", true }, {"iyr", true }, {"eyr", true },{"hgt", true },{"hcl", true },{"ecl", true }, {"pid", true },{"cid", false }
-        };
-        
-
-        private static string ReadData(string filePath)
-        {
-            string lines = null;
-            using (var sr = new StreamReader(filePath)) 
-            {
-               lines = sr.ReadToEnd();
-            }
+            List<string> lines = File.ReadAllLines(filePath).ToList();
             return lines;    
         }
 
-        /*var ParsedPassports = passportParts.Select(x => x.Split(':').Select(x => new { Key = x[0], Value = x[1] })).ToList();
-        //loop over values and check if it parses.
-        foreach (var field in ParsedPassports)
+        public static void Part1()
         {
-            var myKey = field.Where(x => x.Key == x.Key);
-            if (PassportTitles.TryGetValue(field.Where(x = > x.Key == x), out bool required)) 
+            Dictionary<string, string> passportFields = new Dictionary<string, string>();
+
+            int validPassportCount = 0;
+            string[] RequiredFields = new string[] { "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid" };
+            string testFile = @"InputData\testFile4.txt";
+
+            List<string> rawPassportData = ReadData(filePath);
+
+            foreach (string data in rawPassportData)
             {
+                //This check ensures that each group is read and added to the data.
+                if (data.Equals(""))
+                {
+                    bool valid = true; //initially true until passport field is not found. 
+                    foreach (var key in RequiredFields)
+                    {
+                        if (!passportFields.ContainsKey(key))
+                        {
+                            valid = false;
+                            break;
+                        }
+                    }
 
+                    if (valid)
+                    {
+                        validPassportCount++;
+                    }
+
+                    passportFields.Clear(); //Clear data
+                }
+                else
+                {
+                    Console.WriteLine($"Data is: {data}");
+                    var fieldList = data.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var s in fieldList) 
+                    {
+                        string[] fieldParts = s.Split(':');
+                        passportFields.Add(fieldParts[0], fieldParts[1]);
+                       
+                    }
+   
+                }
+            
             }
-        }*/
-
-        private static bool ValidatePassport(string passportUnsorted) 
-        {
-            var passport = passportUnsorted.Replace('\n', ' ');
-
-            if (!passport.Contains("byr")) return false;
-            if (!passport.Contains("hgt")) return false;
-
-            if (!passport.Contains("cid") && passport.Length == 7) return true;
-                
-            return true;
+            Console.WriteLine($"Total valid passport data is: {validPassportCount}");
         }
 
-        public static void Part1() 
+        public static void Part2() 
         {
-            int validPassport = 0;
-
-            string testFile = @"InputData\testFile4.txt";
-            List<string> parsedData = new List<string>();
-            string UnsortedPassports = ReadData(filePath);
-            //Move character to the beginning of the line.
-            string tempData = UnsortedPassports.Replace("\r", "");
-            //.Replace("\n\n", "@").Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
-            var noNewLinesInData = tempData.Replace("\n\n", "@");
-            var PassportInfo = noNewLinesInData.Split(new char[] { '@'});
-
-            foreach (string p in PassportInfo) 
-            {
-                if (ValidatePassport(p)) 
-                {
-                    validPassport++;
-                }
-            }
-          
-            Console.WriteLine($"The number of valid passports are: {validPassport}");
             
         }
 
