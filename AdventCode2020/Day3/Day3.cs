@@ -59,17 +59,18 @@ namespace AdventOfCode2020.Day3
             return treesTotal;
         }
 
-        public static int SolutionToPart2() 
+        public static double SolutionToPart2() 
         {
-            //string testFile = @"InputData\test.txt";
+            string testFile = @"InputData\test.txt";
             List<string> Map = ReadData(filePath);
-            int totalTreesPerSlope = TotalNoOfTreesEncountered(Map);
+            double totalTreesPerSlope = TotalNoOfTreesEncountered(Map);
             return totalTreesPerSlope;
         }
 
         //Part 2
-        private static int TotalNoOfTreesEncountered(List<string> mapData) 
+        private static double TotalNoOfTreesEncountered(List<string> mapData) 
         {
+               
             int slopeOne, slopeTwo, slopeThree, slopeFour, slopeFive;
            
             slopeOne = TraverseMapWithSlope(1, 1, mapData);
@@ -78,7 +79,10 @@ namespace AdventOfCode2020.Day3
             slopeFour = TraverseMapWithSlope(7, 1, mapData);
             slopeFive = TraverseMapWithSlope(1, 2, mapData);
 
-            return slopeOne * slopeTwo * slopeThree * slopeFour * slopeFive;
+            double highOffset = slopeTwo * slopeThree * slopeFour;
+            double lowOffset = slopeOne * slopeFive;
+
+            return highOffset * lowOffset;
             
         }
 
@@ -87,22 +91,24 @@ namespace AdventOfCode2020.Day3
             int y = 0;
             int x = 0;
             int treesCounter = 0;
-            string[] mapArray = mapData.ToArray();
+            //int totalTrees = 1; //Minimum encounter of a tree.
+            //string[] mapArray = mapData.ToArray();
 
-            while (y < mapArray.Length) 
+            while (y < mapData.Count) 
             {
-                if (x >= mapArray[y].Length) 
+                if (x >= mapData[y].Length) 
                 {
-                    x -= mapArray[y].Length;
+                    x -= mapData[y].Length;
                 }
                 
-                if (mapArray[y][x] == '#') 
+                if (mapData[y][x] == '#') 
                 {
                     treesCounter++;
                 }
 
                 x += xSlope;
                 y += ySlope;
+                
                 
             }
 
