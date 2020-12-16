@@ -63,15 +63,15 @@ namespace AdventOfCode2020.Day3
         {
             string testFile = @"InputData\test.txt";
             List<string> Map = ReadData(filePath);
-            double totalTreesPerSlope = TotalNoOfTreesEncountered(Map);
+            Int64 totalTreesPerSlope = TotalNoOfTreesEncountered(Map);
             return totalTreesPerSlope;
         }
 
         //Part 2
-        private static double TotalNoOfTreesEncountered(List<string> mapData) 
+        private static Int64 TotalNoOfTreesEncountered(List<string> mapData) 
         {
                
-            int slopeOne, slopeTwo, slopeThree, slopeFour, slopeFive;
+            Int64 slopeOne, slopeTwo, slopeThree, slopeFour, slopeFive;
            
             slopeOne = TraverseMapWithSlope(1, 1, mapData);
             slopeTwo = TraverseMapWithSlope(3, 1, mapData);
@@ -79,18 +79,16 @@ namespace AdventOfCode2020.Day3
             slopeFour = TraverseMapWithSlope(7, 1, mapData);
             slopeFive = TraverseMapWithSlope(1, 2, mapData);
 
-            double highOffset = slopeTwo * slopeThree * slopeFour;
-            double lowOffset = slopeOne * slopeFive;
-
-            return highOffset * lowOffset;
+         
+            return slopeOne * slopeTwo * slopeThree * slopeFour * slopeFive;
             
         }
 
-        private static int TraverseMapWithSlope(int xSlope, int ySlope, List<string> mapData)
+        private static Int64 TraverseMapWithSlope(int xSlope, int ySlope, List<string> mapData)
         {
             int y = 0;
             int x = 0;
-            int treesCounter = 0;
+            Int64 treesCounter = 0;
             //int totalTrees = 1; //Minimum encounter of a tree.
             //string[] mapArray = mapData.ToArray();
 
