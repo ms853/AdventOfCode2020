@@ -58,26 +58,6 @@ namespace AdventOfCode2020.Day4
             return lines;
         }
 
-        private static bool VerifyPassportGroup(Dictionary<string, string> passports, string key)
-        {
-
-            if (!passports.ContainsKey(key))
-            {
-                return false;
-            }
-
-            if (passports.ContainsKey(key))
-            {
-                if (ValidatePassportData(key, passports[key]))
-                    // validPassports++;
-                    return true;
-                else
-                    return false;
-
-            }
-
-            return true;
-        }
 
         public static void SolutionPart2()
         {
@@ -90,8 +70,7 @@ namespace AdventOfCode2020.Day4
 
             bool valid = true;
             int validPassportCount = 0;
-            string[] RequiredFields = new string[] { "byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid" };
-
+ 
             string testFile = @"InputData\testFile4.txt";
             string testFile1 = @"InputData\passportTest2.txt";
 
@@ -102,16 +81,25 @@ namespace AdventOfCode2020.Day4
                 //This check ensures that each group is read and added to the data.
                 if (data.Equals(""))
                 {
-
                     if (passportFields.Keys.Count < 7)
                     {
                         valid = false;
+                    }
+                  
+
+                    if (!(passportFields.ContainsKey("byr") && passportFields.ContainsKey("iyr") && passportFields.ContainsKey("eyr") && passportFields.ContainsKey("hgt")
+                        && passportFields.ContainsKey("hcl") && passportFields.ContainsKey("ecl") && passportFields.ContainsKey("pid")))
+                    {
+                        valid = false;
+                    }
+                    else 
+                    {
+                        valid = true;
                     }
 
                     if (passportFields.Keys.Count == 7 && !passportFields.ContainsKey("cid"))
                     {
                         valid = true;
-                        //break;
                     }
 
                     if (valid)
@@ -124,7 +112,7 @@ namespace AdventOfCode2020.Day4
                 }
                 else
                 {
-                    Console.WriteLine($"Data is: {data}");
+                   // Console.WriteLine($"Data is: {data}");
                     var fieldList = data.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     foreach (var s in fieldList)
                     {
