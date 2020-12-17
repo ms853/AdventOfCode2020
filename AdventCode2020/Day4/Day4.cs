@@ -80,54 +80,65 @@ namespace AdventOfCode2020.Day4
                     }
 
                     int count = 0;
-                    if (passportFields.ContainsKey("byr")) 
+
+                    if (valid)
                     {
-                        if (ValidatePassportData("byr", passportFields["byr"])) count++;
-                        else
-                            valid = false;
+
+                        if (passportFields.ContainsKey("byr"))
+                        {
+                            if (ValidatePassportData("byr", passportFields["byr"])) count++;
+                            else
+                                valid = false;
+                        }
+                        if (passportFields.ContainsKey("iyr"))
+                        {
+                            if (ValidatePassportData("iyr", passportFields["iyr"])) count++;
+                            else
+                                valid = false;
+                        }
+                        if (passportFields.ContainsKey("eyr"))
+                        {
+                            if (ValidatePassportData("eyr", passportFields["eyr"])) count++;
+                            else
+                                valid = false;
+                        }
+                        if (passportFields.ContainsKey("hgt"))
+                        {
+                            if (ValidatePassportData("hgt", passportFields["hgt"])) count++;
+                            else
+                                valid = false;
+                        }
+                        if (passportFields.ContainsKey("hcl"))
+                        {
+                            if (ValidatePassportData("hcl", passportFields["hcl"])) count++;
+                            else
+                                valid = false;
+                        }
+                        if (passportFields.ContainsKey("ecl"))
+                        {
+                            if (ValidatePassportData("ecl", passportFields["ecl"])) count++;
+                            else
+                                valid = false;
+                        }
+                        if (passportFields.ContainsKey("pid"))
+                        {
+                            if (ValidatePassportData("pid", passportFields["pid"])) count++;
+                            else
+                                valid = false;
+                        }
+
+                        validPassportCount += count;
                     }
-                    if (passportFields.ContainsKey("iyr")) 
+                    else 
                     {
-                        if (ValidatePassportData("iyr", passportFields["iyr"])) count++;
-                        else
-                            valid = false;
+                        validPassportCount = 0;
                     }
-                    if (passportFields.ContainsKey("eyr")) 
-                    {
-                        if (ValidatePassportData("eyr", passportFields["eyr"])) count++;
-                        else
-                            valid = false;
-                    }
-                    if (passportFields.ContainsKey("hgt")) 
-                    {
-                        if (ValidatePassportData("hgt", passportFields["hgt"])) count++;
-                        else
-                            valid = false;
-                    }
-                    if (passportFields.ContainsKey("hcl")) 
-                    {
-                        if (ValidatePassportData("hcl", passportFields["hcl"])) count++;
-                        else
-                            valid = false;
-                    }
-                    if (passportFields.ContainsKey("ecl")) 
-                    {
-                        if (ValidatePassportData("ecl", passportFields["ecl"])) count++;
-                        else
-                            valid = false;
-                    }
-                    if (passportFields.ContainsKey("pid")) 
-                    {
-                        if (ValidatePassportData("pid", passportFields["pid"])) count++;
-                        else
-                            valid = false;
-                    }
-                
+
+
 
 
                     //These are all checks for part1.
-                    if (valid)
-                        validPassportCount += count;
+
 
                     passportFields.Clear(); //Clear data
                 }
