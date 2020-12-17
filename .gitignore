@@ -1,1 +1,7 @@
 AdventCode2020/InputData/test.txt
+
+# Ignore all project files.
+AdventCode2020/bin
+AdventCode2020/obj
+AdventCode2020/.vs/*
+*.nupkg
