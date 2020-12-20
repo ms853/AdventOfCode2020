@@ -157,30 +157,7 @@ namespace AdventOfCode2020.Day4
             Console.WriteLine($"Total number of valid passports that have been validated as valid: {totalValidPassports}");
         }
 
-        private static bool CheckPassportValidity(Dictionary<string, string> passportFields)
-        {
-
-            if (!(passportFields.ContainsKey("byr") && passportFields.ContainsKey("iyr") && passportFields.ContainsKey("eyr") && passportFields.ContainsKey("hgt")
-                && passportFields.ContainsKey("hcl") && passportFields.ContainsKey("ecl") && passportFields.ContainsKey("pid")))
-            {
-                return false;
-            }
-            else 
-            {
-               
-            }
-
-            
-            if (passportFields.Keys.Count == 7 && !passportFields.ContainsKey("cid"))
-            {
-                //ListofPassports.Add(passportFields);
-                return true;
-            }
-
-            //ListofPassports.Add(passportFields);
-            return true;
-        }
-
+        
         /// <summary>
         /// Validation method for part2
         /// </summary>
@@ -274,85 +251,5 @@ namespace AdventOfCode2020.Day4
             return false;
         }
 
-
-        /*
-         * 
-            foreach (string data in rawPassportData)
-            {
-                //This check ensures that each group is read and added to the data.
-                if (data.Equals(""))
-                {
-                    // Console.WriteLine($"Data is: {data}");
-                    continue;
-                }
-                if (data.Equals(rawPassportData[rawPassportData.Count - 1])) { }
-                var fieldList = data.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var s in fieldList)
-                {
-                    string[] fieldParts = s.Split(':');
-                    if (passportFields.ContainsKey(fieldParts[0])) break;
-                    passportFields.Add(fieldParts[0], fieldParts[1]);
-                }
-        
-
-                if (passportFields.Keys.Count >= 7)
-                {
-                    valid = CheckPassportValidity(passportFields);
-                    if (valid)
-                    {
-                        validPassportCount++;
-                        ListofPassports.Add(passportFields);
-                        passportFields.Clear();
-                    }
-                }
-                //passportFields.Clear();
-
-            }
-         * 
-         * 
-         * 
-         *  if (passportFields.ContainsKey("byr"))
-                        {
-                            if (ValidatePassportData("byr", passportFields["byr"])) count++;
-                            else
-                                valid = false;
-                        }
-                        if (passportFields.ContainsKey("iyr"))
-                        {
-                            if (ValidatePassportData("iyr", passportFields["iyr"])) count++;
-                            else
-                                valid = false;
-                        }
-                        if (passportFields.ContainsKey("eyr"))
-                        {
-                            if (ValidatePassportData("eyr", passportFields["eyr"])) count++;
-                            else
-                                valid = false;
-                        }
-                        if (passportFields.ContainsKey("hgt"))
-                        {
-                            if (ValidatePassportData("hgt", passportFields["hgt"])) count++;
-                            else
-                                valid = false;
-                        }
-                        if (passportFields.ContainsKey("hcl"))
-                        {
-                            if (ValidatePassportData("hcl", passportFields["hcl"])) count++;
-                            else
-                                valid = false;
-                        }
-                        if (passportFields.ContainsKey("ecl"))
-                        {
-                            if (ValidatePassportData("ecl", passportFields["ecl"])) count++;
-                            else
-                                valid = false;
-                        }
-                        if (passportFields.ContainsKey("pid"))
-                        {
-                            if (ValidatePassportData("pid", passportFields["pid"])) count++;
-                            else
-                                valid = false;
-                        }
-         * **/
     }
 }
