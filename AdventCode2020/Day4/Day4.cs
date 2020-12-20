@@ -52,6 +52,11 @@ namespace AdventOfCode2020.Day4
         //Hold the list of valid passwords.
         static List<Dictionary<string, string>> ListofPassports = new List<Dictionary<string, string>>();
 
+        /// <summary>
+        /// Read data with a given file path, and returns an a long string consisting of all the contents of the file. 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
         private static string ReadData(string filePath)
         {
             string lines = null;
@@ -65,46 +70,59 @@ namespace AdventOfCode2020.Day4
 
         public static void SolutionPart1()
         {
-            Dictionary<string, string> passportFields = new Dictionary<string, string>(); ;
+            //This data 
+            Dictionary<string, bool> passportFieldKeys = new Dictionary<string, bool>() 
+            {
+                {"byr", true},
+                {"ecl", true},
+                {"hgt", true},
+                {"eyr", true},
+                {"iyr", true},
+                {"hcl", true},
+                {"pid", true},
+                {"cid", false}
+            };
 
-            bool valid;
-            int validPassportCount = 0;
+            int validPassportCount = 0, totalNoRequiredFields = 7;
  
             string testFile = @"InputData\testFile4.txt";
             string testFile1 = @"InputData\passportTest2.txt";
 
-            string rawPassportData = ReadData(testFile);
-            string[] passports = rawPassportData.Replace("\n\n", "|").Split(new char[] { '|', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            string rawPassportData = ReadData(filePath); 
+            //Using double line feeds to differentiate between passport groups.
+            string[] passports = rawPassportData.Replace("\r", "").Split("\n\n"); 
 
-            foreach (string data in validPassportdataset) 
+            int counter = 0;
+            foreach (string passport in passports) 
             {
-                if (data.Equals("")) continue;
-                var fieldList = data.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string str in fieldList) 
-                {
-                    var fieldParts = str.Split(':');
-                    if (passportFields.ContainsKey(fieldParts[0])) 
-                    {
-                        passportFields = new Dictionary<string, string>();
-                    }
-                    passportFields.Add(fieldParts[0], fieldParts[1]);
-                }
+                int requiredFields = 0, optionalFields = 0;
+                var data = passport.Split(new char[] { '\n', ' ' }, StringSplitOptions.RemoveEmptyEntries); //Data will result in eyr:2013,...
+                //Creating an anonymous type, which will consists of splitting up the passport of fields into key value pairs. 
+                var fieldParts = data.Select(x => x.Split(":")).Select(x => new { Key = x[0], Value = x[1] }).ToList();
 
-                if (passportFields.Keys.Count >= 7)
+                foreach (var fieldKey in fieldParts)
                 {
-                    valid = CheckPassportValidity(passportFields);
-                    if (valid)
+                    /*
+                     * Do a lookup to check if the Field Id exists in our dictionary, and if it is a required field.
+                     * If it is a required field then we want to increment the required field count.
+                     * If not increment the optional field count.
+                     * **/
+                    if (passportFieldKeys.TryGetValue(fieldKey.Key, out bool required))
                     {
-                        validPassportCount++;
-                        //ListofPassports.Add(passportFields);
-                        //passportFields.Clear();
+                        if (required) 
+                            requiredFields++;
+                        else 
+                            optionalFields++;
                     }
-                   /* else 
-                    {
-                        passportFields.Clear();
-                    }*/
                 }
-            //    passportFields.Clear();
+                //Valid passport count is incremented only when the total number of required field is equal to the expected number.
+                if (requiredFields == totalNoRequiredFields) 
+                {
+                    validPassportCount++;
+                    var FieldDict = fieldParts.ToDictionary(part => part.Key, part => part.Value); 
+                    ListofPassports.Add(FieldDict);
+                }
+                
             }
 
             Console.WriteLine($"Total valid passport data is: {validPassportCount}");
@@ -147,15 +165,19 @@ namespace AdventOfCode2020.Day4
             {
                 return false;
             }
+            else 
+            {
+               
+            }
 
             
             if (passportFields.Keys.Count == 7 && !passportFields.ContainsKey("cid"))
             {
-                ListofPassports.Add(passportFields);
+                //ListofPassports.Add(passportFields);
                 return true;
             }
 
-            ListofPassports.Add(passportFields);
+            //ListofPassports.Add(passportFields);
             return true;
         }
 
