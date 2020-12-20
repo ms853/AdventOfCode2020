@@ -86,15 +86,16 @@ namespace AdventOfCode2020.Day4
             int validPassportCount = 0, totalNoRequiredFields = 7;
  
             string testFile = @"InputData\testFile4.txt";
-            string testFile1 = @"InputData\passportTest2.txt";
+            string ValidPPortData = @"InputData\passportTest2.txt";
 
             string rawPassportData = ReadData(filePath); 
             //Using double line feeds to differentiate between passport groups.
             string[] passports = rawPassportData.Replace("\r", "").Split("\n\n"); 
 
-            int counter = 0;
             foreach (string passport in passports) 
             {
+                //if (passport.Equals("")) continue;
+
                 int requiredFields = 0, optionalFields = 0;
                 var data = passport.Split(new char[] { '\n', ' ' }, StringSplitOptions.RemoveEmptyEntries); //Data will result in eyr:2013,...
                 //Creating an anonymous type, which will consists of splitting up the passport of fields into key value pairs. 
@@ -148,11 +149,13 @@ namespace AdventOfCode2020.Day4
                     else
                     {
                         invalidCount++;
+                        Console.WriteLine($" The following key failed validation: {key}:{passport[key]}");
                     }
 
                 }
 
                 if (invalidCount == 0) totalValidPassports++;
+                
             }
             Console.WriteLine($"Total number of valid passports that have been validated as valid: {totalValidPassports}");
         }
