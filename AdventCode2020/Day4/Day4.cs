@@ -131,11 +131,14 @@ namespace AdventOfCode2020.Day4
 
         public static void SolutionPart2()
         {
-            int validCount = 0, invalidCount = 0, totalValidPassports = 0;
+           
+            int invalidCount = 0;
+            int totalValidPassports = 0;
             bool isValid;
 
             foreach (Dictionary<string, string> passport in ListofPassports)
             {
+                int validCount = 0;
                 foreach (string key in passport.Keys)
                 {
                     if (key.Equals("cid")) continue;
@@ -151,12 +154,14 @@ namespace AdventOfCode2020.Day4
                         invalidCount++;
                         Console.WriteLine($" The following key failed validation: {key}:{passport[key]}");
                     }
-
+                    
+                    if (validCount == 7) totalValidPassports++;
                 }
 
-                if (invalidCount == 0) totalValidPassports++;
+
                 
             }
+            
             Console.WriteLine($"Total number of valid passports that have been validated as valid: {totalValidPassports}");
         }
 
@@ -195,10 +200,8 @@ namespace AdventOfCode2020.Day4
                     break;
 
                 case "hgt":
-                    if (!(fieldValue.Contains("cm") || fieldValue.Contains("in")))
-                        return false;
 
-                    if (fieldValue.Length == 5)
+                    if (fieldValue.EndsWith("cm"))
                     {
 
                         string heightStr = fieldValue.Substring(0, fieldValue.Length - 2);
@@ -209,7 +212,7 @@ namespace AdventOfCode2020.Day4
                         }
 
                     }
-                    if (fieldValue.Length == 4)
+                    if (fieldValue.EndsWith("in"))
                     {
                         string value = fieldValue.Substring(0, fieldValue.Length - 2);
                         int heightInInches = int.Parse(value);
@@ -225,9 +228,9 @@ namespace AdventOfCode2020.Day4
                     if (fieldValue.Length != 7)
                         return false;
 
-                    string regexCheck1 = @"^(?:[\#\da-f]*)?$";
-                    string regexCheck2 = @"^(?:[\#\d]*)$";
-                    if (Regex.IsMatch(fieldValue, regexCheck1) || Regex.IsMatch(fieldValue, regexCheck2))
+                    string regexCheck1 = @"^(?:#[0-9a-f]{6})?$";
+                   
+                    if (Regex.IsMatch(fieldValue, regexCheck1))
                         return true;
                     break;
 
@@ -241,10 +244,9 @@ namespace AdventOfCode2020.Day4
 
                     break;
                 case "pid":
-                    if (fieldValue.Length == 9) return true;
-                    
-                    //string regexCheck = @"^(?:[\0-1]*)$";
-                    /*if (Regex.IsMatch(fieldValue, regexCheck))*/
+
+                    string regexCheck = @"^(?:[0-9]{9})?$";
+                    if (Regex.IsMatch(fieldValue, regexCheck)) return true;
 
                     break;
                 default:
