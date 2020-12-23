@@ -35,9 +35,7 @@ namespace AdventOfCode2020.Day7
 
         //For holding all the colour-codeds with their parent bags.
         static Dictionary<string, List<BagDetails>> BagColoursInABag = new Dictionary<string, List<BagDetails>>();
-        static List<BagDetails> bagContained = new List<BagDetails>(); //List of Colour-coded bags.
-        static Dictionary<string,bool> bagsRead = new Dictionary<string, bool>();
-
+        
         private static int GetBags() 
         {
             //Test Data - specify the required contents for 9 bag types.
@@ -54,27 +52,31 @@ namespace AdventOfCode2020.Day7
             };
 
             int shinyBagCount = 0; //total number of shiny shoes that can be added by the outermoset bag.
-           // List<string> DataToParse = ReadData(fileName);
+            List<string> DataToParse = ReadData(fileName);
             
 
-            foreach (string rule in BagRulesTest) 
-            {                
-                var firstBag = rule.Substring(0, rule.Length - 1).Split("bags contain"); //Split consist of the colour of the outer bag and the bags it can hold.
-                var outermostBag = firstBag[0]; 
-                var innerBags = firstBag[1].Split(",");
+            foreach (string rule in DataToParse) 
+            {
+                List<BagDetails> bagContained = new List<BagDetails>(); //List of Colour-coded bags.
+                var firstBag = rule.Substring(0, rule.Length - 1).Split(" bags contain "); //Split consist of the colour of the outer bag and the bags it can hold.
+                var outermostBag = firstBag[0];
 
-                foreach (string bagInfo in innerBags) 
+                //int bagWord = firstBag[1].IndexOf("bag");
+                string innerBags = firstBag[1].Trim();
+                var childBags = innerBags.Split(", ", StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string bagInfo in childBags) 
                 {
-                    if (bagInfo.Contains("no")) continue; 
-                    
-                   
-                    int index = bagInfo.Trim().IndexOf(" ");
-                    int quantity = int.Parse(bagInfo.Substring(index, 1));
-                    string bagName = bagInfo.Substring(index + 1).Trim();
+                    if (bagInfo.Contains("no other bags")) continue;
+                    var bagInfoList = bagInfo.Split(" ");
+                    int quantity = 0; string bagColour = null;
+                    quantity = int.Parse(bagInfoList[0]);
+                    bagColour = String.Join(' ', bagInfoList[1], bagInfoList[2]);
+
                     var bagDetails = new BagDetails();
                     bagDetails.Quantity = quantity;
-                    bagDetails.BagColour = bagName;
-                    
+                    bagDetails.BagColour = bagColour;
+
                     bagContained.Add(bagDetails);
                 }
                 BagColoursInABag.Add(outermostBag, bagContained);
@@ -100,37 +102,13 @@ namespace AdventOfCode2020.Day7
         /// <returns></returns>
         private static bool FindShinyBags(string outerbag)
         {
-            
-            if (BagColoursInABag.TryGetValue(outerbag, out List<BagDetails> bagList)) 
+            foreach (var subBags in BagColoursInABag[outerbag])
             {
-                foreach (var bagDetails in bagList)
-                {
-                    if (bagDetails.BagColour.StartsWith("shiny gold"))
-                    {
-                        return true;
-                    }
-                }
-
-                foreach (var subBag in bagList)
-                {
-                    var bagName = subBag.BagColour;
-                    if (bagsRead.ContainsKey(bagName))
-                    {
-                        return true;
-                    }
-                    else 
-                    {
-                        bool containsBag = FindShinyBags(bagName);
-                        bagsRead.Add(bagName, containsBag);
-                        return containsBag;
-                           
-                    }
-
-                }
+                if (subBags.BagColour == "shiny gold")
+                    return true;
+                return FindShinyBags(subBags.BagColour);
             }
-
-            
-
+         
             return false;
         }
 
