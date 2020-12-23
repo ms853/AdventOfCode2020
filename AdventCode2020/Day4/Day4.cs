@@ -70,7 +70,6 @@ namespace AdventOfCode2020.Day4
 
         public static void SolutionPart1()
         {
-            //This data 
             Dictionary<string, bool> passportFieldKeys = new Dictionary<string, bool>() 
             {
                 {"byr", true},
