@@ -51,33 +51,38 @@ namespace AdventOfCode2020.Day7
                 "dotted black bags contain no other bags."
             };
 
+            string[] Part2Test = new string[] 
+            {
+                "shiny gold bags contain 2 dark red bags.",
+                "dark red bags contain 2 dark orange bags.",
+                "dark orange bags contain 2 dark yellow bags.",
+                "dark yellow bags contain 2 dark green bags.",
+                "dark green bags contain 2 dark blue bags.",
+                "dark blue bags contain 2 dark violet bags.",
+                "dark violet bags contain no other bags."
+            };
+
             int shinyBagCount = 0; //total number of shiny shoes that can be added by the outermoset bag.
             List<string> DataToParse = ReadData(fileName);
             
 
             foreach (string rule in DataToParse) 
             {
-                List<BagDetails> bagContained = new List<BagDetails>(); //List of Colour-coded bags.
-                var firstBag = rule.Substring(0, rule.Length - 1).Split(" bags contain "); //Split consist of the colour of the outer bag and the bags it can hold.
-                var outermostBag = firstBag[0];
+                var bagContained = new List<BagDetails>(); //List of Colour-coded bags.
+                var ruleParts = rule.Split(" bags contain "); //Split consist of the colour of the outer bag and the bags it can hold.
+                var outermostBag = ruleParts[0];
 
-                //int bagWord = firstBag[1].IndexOf("bag");
-                string innerBags = firstBag[1].Trim();
+                string innerBags = ruleParts[1].Trim();
                 var childBags = innerBags.Split(", ", StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string bagInfo in childBags) 
                 {
                     if (bagInfo.Contains("no other bags")) continue;
                     var bagInfoList = bagInfo.Split(" ");
-                    int quantity = 0; string bagColour = null;
-                    quantity = int.Parse(bagInfoList[0]);
-                    bagColour = String.Join(' ', bagInfoList[1], bagInfoList[2]);
+                    int quantity = int.Parse(bagInfoList[0]);
+                    string bagColour = String.Join(' ', bagInfoList[1], bagInfoList[2]);
 
-                    var bagDetails = new BagDetails();
-                    bagDetails.Quantity = quantity;
-                    bagDetails.BagColour = bagColour;
-
-                    bagContained.Add(bagDetails);
+                    bagContained.Add(new BagDetails { Quantity = quantity, BagColour = bagColour });
                 }
                 BagColoursInABag.Add(outermostBag, bagContained);
                 
@@ -104,9 +109,9 @@ namespace AdventOfCode2020.Day7
         {
             foreach (var subBags in BagColoursInABag[outerbag])
             {
-                if (subBags.BagColour == "shiny gold")
+                if (subBags.BagColour == "shiny gold" || FindShinyBags(subBags.BagColour))
                     return true;
-                return FindShinyBags(subBags.BagColour);
+
             }
          
             return false;
@@ -119,6 +124,26 @@ namespace AdventOfCode2020.Day7
             
             Console.WriteLine($"The total number of bag colours that can contain at least one shiny gold bag is: {totalNoBags}");
         }
-        
+
+        public static void Day7SolutionPart2() 
+        {
+            int totalBagCount = (CountBags("shiny gold") -1);
+            Console.WriteLine($"Total number of bags are: {totalBagCount}");
+        }
+
+        private static int CountBags(string bagName)
+        {
+            var shinyGoldBagList = BagColoursInABag[bagName];
+            int bagCount = 1;
+            
+            foreach (var childBag in shinyGoldBagList)
+            { 
+                
+                bagCount += (childBag.Quantity * CountBags(childBag.BagColour));
+
+            }
+
+            return bagCount;
+        }
     }
 }
