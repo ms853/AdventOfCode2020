@@ -12,6 +12,8 @@ namespace AdventOfCode2020.Day8
     /// </summary>
     public class Day8
     {
+        private static int accumulator = 0;
+        private static int programCounter = 0;
         const string fileName = @"InputData\boot_input.txt";
         private static List<string> ReadData(string filePath)
         {
@@ -19,12 +21,53 @@ namespace AdventOfCode2020.Day8
             return lines;
         }
 
-        private static void ParseInput() 
+        public static void Part1() 
         {
-            
+            string testFile = @"InputData\test.txt";
+
+            List<string> bootData = ReadData(fileName);
+            bool run = true;
+
+            List<int> ProgramCountList = new List<int>();
+            while (run) 
+            {
+                ProgramCountList.Add(programCounter);
+                string s = bootData[programCounter];
+                
+                string[] instructions = s.Split(" ");
+                   
+                ProcessInstruction(instructions);
+
+                if (ProgramCountList.Contains(programCounter))
+                    run = false;
+
+
+            }
+            Console.WriteLine($"Part1: Accumulator: {accumulator}, Program Counter: {programCounter}");
         }
 
-        public static void Part1() 
+        private static void ProcessInstruction(string[] instructOp)
+        {
+            string operation = instructOp[0];
+            switch (operation) 
+            {
+                case "nop":
+                    programCounter++;
+                    break;
+
+                case "acc":
+                    accumulator += int.Parse(instructOp[1]);
+                    programCounter++;
+                    break;
+
+                case "jmp":
+                    programCounter += int.Parse(instructOp[1]);
+                    break;
+               
+            }
+        }
+
+        public static void Part2() 
         {
         
         }
