@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AdventOfCode2020": {
+      "commandName": "Project",
+      "workingDirectory": "D:\\Private Study\\AdventOfCode2020\\AdventCode2020"
+    }
+  }
+}

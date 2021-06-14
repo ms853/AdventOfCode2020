@@ -156,9 +156,7 @@ namespace AdventOfCode2020.Day4
                     
                     if (validCount == 7) totalValidPassports++;
                 }
-
-
-                
+ 
             }
             
             Console.WriteLine($"Total number of valid passports that have been validated as valid: {totalValidPassports}");

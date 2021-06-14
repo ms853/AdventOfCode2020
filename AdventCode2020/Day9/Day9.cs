@@ -21,13 +21,15 @@ namespace AdventOfCode2020.Day9
             return lines;
         }
 
+        private static HashSet<long> SetForNumbers = new HashSet<long>();  
+
         //Valid Criteria
         //Numbers must be different to each other and the there must be one pair that is the sum of the number.
 
-        public static void Part1()
+        public static long Part1()
         {
 
-            bool numberFound;
+            long numberToReturn = 0;
             List<string> Data = ReadData(file);
             //Preambled numbers
             string[] testData = new string[]
@@ -35,7 +37,7 @@ namespace AdventOfCode2020.Day9
             "35","20","15","25","47","40","62","55","65","95","102","117","150","182","127","219","299","277","309","576"
             };
 
-            List<int> prev25Numbers = new List<int>();
+            List<Int64> prev25Numbers = new List<Int64>();
             
             for (int i = 0; i < 25; i++) 
             {
@@ -43,11 +45,13 @@ namespace AdventOfCode2020.Day9
                
             }
 
-            for (int i = 0; i < Data.Count; i++) 
+            for (int i = 25; i < Data.Count; i++) 
             {
-                int number = int.Parse(Data[i]);
-                numberFound = ProcessPreambledNumbers(number, prev25Numbers);
+                Int64 number = Int64.Parse(Data[i]);
 
+                bool numberFound;
+                numberFound = ProcessPreambledNumbers(number, prev25Numbers);
+                  
                 if (numberFound)
                 {
                     prev25Numbers.RemoveAt(0);
@@ -56,33 +60,65 @@ namespace AdventOfCode2020.Day9
                 else 
                 {
                     Console.WriteLine($"Part 1 Answer: {number}");
+                    numberToReturn = number;
                     break;
                 }
-   
+
             }
-            
-            
-              
-            
+
+            return numberToReturn;
         }
 
-        private static bool ProcessPreambledNumbers(int number, List<int> prev25Numbers)
+        private static bool ProcessPreambledNumbers(Int64 number, List<Int64> prev25Numbers)
         {
-           
-            for (int i = 0; i < prev25Numbers.Count; i++) 
+            bool found = false;
+            
+            for (int j = 0; j < prev25Numbers.Count; j++) 
             {
-                for (int j = i; j < prev25Numbers.Count; j++) 
+                if (found) break;
+                
+                for (int k = j + 1; k < prev25Numbers.Count; k++) 
                 {
-                    int previousNum1 = prev25Numbers[i];
-                    int previousNum2 = prev25Numbers[j];
+                    Int64 previousNum1 = prev25Numbers[j];
+                    Int64 previousNum2 = prev25Numbers[k];
 
                     if (previousNum1 + previousNum2 == number)
-                        return true;
-                   
+                    {
+                        found = true;
+                    }
+                    else 
+                    {
+                        SetForNumbers.Add(previousNum1);
+                        SetForNumbers.Add(previousNum2);
+                    }
+                        
+
+
                 }   
             }
 
-            return false;
+            return found;
+        }
+
+        public static void Part2() 
+        {
+            long targetNumber = Part1();
+
+            /*for (int i = 0; i < SetForNumbers.Count(); i++) 
+            {
+                for (int j = i + 1; j < SetForNumbers.Count; j++) 
+                {
+                    
+                }
+            }*/
+            if (SetForNumbers.Sum() == targetNumber)
+            {
+                Console.WriteLine($"It equals: {targetNumber}"); 
+            }
+            else 
+            {
+                Console.WriteLine($"Set equals: {SetForNumbers.Sum()}");
+            }
         }
     }
 }

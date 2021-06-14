@@ -12,7 +12,12 @@ namespace AdventOfCode2020
             //Day3.Day3.SolutionToPart1();
             //Day4.Day4.SolutionPart1();
             //Day4.Day4.SolutionPart2();
-            Day7.Day7.Day7SolutionPart1();
+            //Day7.Day7.Day7SolutionPart1();
+            //Day7.Day7.Day7SolutionPart2();
+            //Day8.Day8.Part1();
+            //Day8.Day8.Part2();
+            Day9.Day9.Part1();
+            Day9.Day9.Part2();
         }
     }
 }
